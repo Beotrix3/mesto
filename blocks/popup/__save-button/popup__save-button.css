@@ -8,6 +8,7 @@
   line-height: 22px;
   font-weight: 400;
   border: none;
+  border-radius: 2px;
   transition: opacity .3s ease;
 }
 

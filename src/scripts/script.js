@@ -17,8 +17,8 @@ closePopupButton.addEventListener('click', togglePopup);
 let formElement = document.querySelector('.popup__container');
 let profileName = document.querySelector('.profile__name');
 let profileDescription = document.querySelector('.profile__description');
-let popupName = document.querySelector('.popup__info_name');
-let popupDescription = document.querySelector('.popup__info_description');
+let popupName = document.querySelector('.popup__info_type_name');
+let popupDescription = document.querySelector('.popup__info_type_description');
 
 function formSubmitHandler (evt) {
   evt.preventDefault();
