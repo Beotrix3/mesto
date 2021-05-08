@@ -26,4 +26,8 @@
 
 * [Ссылка на макет в Figma](https://www.figma.com/file/2cn9N9jSkmxD84oJik7xL7/JavaScript.-Sprint-4?node-id=0%3A1)
 
+<<<<<<< HEAD
 * [Ссылка на GitHub Pages](https://beotrix3.github.io/mesto/index.html)
+=======
+* [Ссылка на GitHub Pages](https://beotrix3.github.io/mesto/index.html)
+>>>>>>> e6bce06fb0fd22361899be6572077258c2d1d819
