@@ -1,5 +1,6 @@
 const openEditPopupButton = document.querySelector('.profile__edit-button');
 const openAddPopupButton = document.querySelector('.profile__add-button');
+const popup = document.querySelector('.popup')
 const popupEdit = document.querySelector('.popup_edit-profile');
 const popupAdd = document.querySelector('.popup_element_add');
 const popupImage = document.querySelector('.popup_type_image');
@@ -16,10 +17,28 @@ const popupDescription = formElement.querySelector('.popup__info_type_descriptio
 
 function openPopup(popup) {
   popup.classList.add('popup_opened');
+  document.addEventListener('keydown', closeEscPopup);
+  popup.addEventListener('click', closeOverlayPopup);
 }
 
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
+  document.addEventListener('keydown', closeEscPopup);
+  popup.addEventListener('click', closeOverlayPopup);
+}
+
+function closeEscPopup(evt) {
+  if(evt.keyCode === 27) {
+    const popup = document.querySelector('.popup_opened');
+    closePopup(popup);
+  }
+}
+
+function closeOverlayPopup(evt) {
+  if(evt.target === evt.currentTarget){
+    const popup = document.querySelector('.popup_opened');
+    closePopup(popup);
+  }
 }
 
 openEditPopupButton.addEventListener('click', function() {
@@ -132,10 +151,21 @@ function createElement(evt) {
 }
 
 function imagePopupHandler (element) {
-  popupImage.classList.toggle('popup_opened');
   popupLargeImage.src = element.link;
   popupLargeImage.alt = element.name;
   popupCaption.textContent = element.name;
+  openPopup(popupImage);
 }
 
 formAddElement.addEventListener('submit', createElement);
+
+const config = {
+  formSelector: '.popup__container',
+  inputSelector: '.popup__info',
+  submitButtonSelector: '.popup__save-button',
+  inactiveButtonClass: 'popup__save-button_disabled',
+  inputErrorClass: 'popup__info_type_error',
+  errorActiveClass: 'popup__input-error_active'
+};
+
+enableValidation(config);

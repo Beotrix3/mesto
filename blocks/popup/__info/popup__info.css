@@ -6,15 +6,15 @@
   border:none;
   border-bottom: 1px solid rgba(0, 0, 0, .2);
   padding-bottom:13px;
-  margin:0 36px 30px;
+  margin:30px 36px 0;
 }
 
-.popup__info:last-of-type{
-  margin-bottom:0;
+.popup__info:first-of-type{
+  margin-top:0;
 }
 
 @media (max-width: 625px) {
   .popup__info {
-    margin:0 22px 30px;
+    margin:30px 22px 0;
   }
 }
