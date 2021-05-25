@@ -1,6 +1,5 @@
 const openEditPopupButton = document.querySelector('.profile__edit-button');
 const openAddPopupButton = document.querySelector('.profile__add-button');
-const popup = document.querySelector('.popup')
 const popupEdit = document.querySelector('.popup_edit-profile');
 const popupAdd = document.querySelector('.popup_element_add');
 const popupImage = document.querySelector('.popup_type_image');
@@ -23,12 +22,12 @@ function openPopup(popup) {
 
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
-  document.addEventListener('keydown', closeEscPopup);
-  popup.addEventListener('click', closeOverlayPopup);
+  document.removeEventListener('keydown', closeEscPopup);
+  popup.removeEventListener('click', closeOverlayPopup);
 }
 
 function closeEscPopup(evt) {
-  if(evt.keyCode === 27) {
+  if(evt.key === 'Escape') {
     const popup = document.querySelector('.popup_opened');
     closePopup(popup);
   }
@@ -36,8 +35,7 @@ function closeEscPopup(evt) {
 
 function closeOverlayPopup(evt) {
   if(evt.target === evt.currentTarget){
-    const popup = document.querySelector('.popup_opened');
-    closePopup(popup);
+    closePopup(evt.target);
   }
 }
 
@@ -109,8 +107,8 @@ function createCard(element) {
   const largeImage = newElement.querySelector('.element__image');
 
   newElement.querySelector('.element__title').textContent = element.name;
-  newElement.querySelector('.element__image').alt = element.name;
-  newElement.querySelector('.element__image').src = element.link;
+  largeImage.alt = element.name;
+  largeImage.src = element.link;
 
   elementDeleteButton.addEventListener('click', function deleteElement(evt){
     evt.target.closest('.element').remove();
@@ -147,6 +145,7 @@ function createElement(evt) {
     link: popupLink.value
   }, elements);
   formAddElement.reset();
+  clearInput(formElement, config);
   closePopup(popupAdd);
 }
 
