@@ -1,11 +1,11 @@
-function clearInput(formElement, config) {
+const clearInput = (formElement, config) => {
   const {inputSelector, submitButtonSelector} = config;
   const inputList = formElement.querySelectorAll(inputSelector);
   const buttonElement = formElement.querySelector(submitButtonSelector);
   inputList.forEach((inputElement) => {
     hideInputError (inputElement, formElement, config);
     toggleButtonState(buttonElement, inputList);
-    inputElement.value = '';
+    inputElement.value = ''
   });
 }
 
@@ -39,8 +39,10 @@ const hasInvalidInput = (inputList) => {
 
 const toggleButtonState = (buttonElement, inputList) => {
   if (hasInvalidInput(inputList)) {
+    buttonElement.disabled = true;
     buttonElement.classList.add('popup__save-button_disabled');
   } else {
+    buttonElement.disabled = false;
     buttonElement.classList.remove('popup__save-button_disabled');
   }
 }
