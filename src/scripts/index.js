@@ -145,7 +145,6 @@ function createElement(evt) {
     link: popupLink.value
   }, elements);
   formAddElement.reset();
-  clearInput(formElement, config);
   closePopup(popupAdd);
 }
 

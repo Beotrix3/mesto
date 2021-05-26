@@ -1,14 +1,3 @@
-const clearInput = (formElement, config) => {
-  const {inputSelector, submitButtonSelector} = config;
-  const inputList = formElement.querySelectorAll(inputSelector);
-  const buttonElement = formElement.querySelector(submitButtonSelector);
-  inputList.forEach((inputElement) => {
-    hideInputError (inputElement, formElement, config);
-    toggleButtonState(buttonElement, inputList);
-    inputElement.value = ''
-  });
-}
-
 const hideInputError = (formElement, inputElement, config) => {
   const { inputErrorClass, errorActiveClass } = config;
   const errorElement = formElement.querySelector(`#${inputElement.id}-error`);
@@ -38,12 +27,13 @@ const hasInvalidInput = (inputList) => {
 }
 
 const toggleButtonState = (buttonElement, inputList) => {
+  const {inactiveButtonClass} = config;
   if (hasInvalidInput(inputList)) {
     buttonElement.disabled = true;
-    buttonElement.classList.add('popup__save-button_disabled');
+    buttonElement.classList.add(inactiveButtonClass);
   } else {
     buttonElement.disabled = false;
-    buttonElement.classList.remove('popup__save-button_disabled');
+    buttonElement.classList.remove(inactiveButtonClass);
   }
 }
 
