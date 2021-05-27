@@ -145,6 +145,8 @@ function createElement(evt) {
     link: popupLink.value
   }, elements);
   formAddElement.reset();
+  const button = formAddElement.querySelector('.popup__save-button');
+  toggleButtonState(button,[popupTitle, popupLink]);
   closePopup(popupAdd);
 }
 
