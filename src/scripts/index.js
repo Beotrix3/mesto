@@ -116,18 +116,8 @@ initialCards.forEach((element) => {
 }); 
  
 const formAddElement = document.querySelector('.popup__container_add');
-const button = document.querySelector('popup__save-button');
 const popupTitle = formAddElement.querySelector('.popup__info_type_title'); 
 const popupLink = formAddElement.querySelector('.popup__info_type_link');
-
-const resetValidator = new FormValidator({
-  formSelector: '.popup__container', 
-  inputSelector: '.popup__info', 
-  submitButtonSelector: '.popup__save-button', 
-  inactiveButtonClass: 'popup__save-button_disabled', 
-  inputErrorClass: 'popup__info_type_error', 
-  errorActiveClass: 'popup__input-error_active'
-}, formAddElement);
  
 function createElement(evt) { 
   evt.preventDefault(); 
@@ -136,30 +126,23 @@ function createElement(evt) {
     link: popupLink.value 
   }, elements); 
   formAddElement.reset();
-  resetValidator.toggleButtonState(button, [popupTitle, popupLink]);
+  addPopupValidator.toggleButtonState();
   closePopup(popupAdd); 
 }
 
 formAddElement.addEventListener('submit', createElement);
 
-const editPopupValidator = new FormValidator ({ 
+const config = ({
   formSelector: '.popup__container', 
   inputSelector: '.popup__info', 
   submitButtonSelector: '.popup__save-button', 
   inactiveButtonClass: 'popup__save-button_disabled', 
   inputErrorClass: 'popup__info_type_error', 
-  errorActiveClass: 'popup__input-error_active' 
-}, formElement); 
+  errorActiveClass: 'popup__input-error_active'
+});
 
+const editPopupValidator = new FormValidator (config, formElement); 
 editPopupValidator.enableValidation();
 
-const addPopupValidator = new FormValidator ({ 
-  formSelector: '.popup__container', 
-  inputSelector: '.popup__info', 
-  submitButtonSelector: '.popup__save-button', 
-  inactiveButtonClass: 'popup__save-button_disabled', 
-  inputErrorClass: 'popup__info_type_error', 
-  errorActiveClass: 'popup__input-error_active' 
-}, formAddElement);
-
+const addPopupValidator = new FormValidator (config, formAddElement);
 addPopupValidator.enableValidation();
