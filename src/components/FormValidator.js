@@ -52,7 +52,7 @@ export default class FormValidator {
     this.toggleButtonState(); 
   } 
  
-  enableValidation() { 
-    this._setEventListeners(); 
-  } 
-} 
+  enableValidation() {
+    this._setEventListeners();
+  }
+}

@@ -1,5 +1,5 @@
-export default class Card { 
-  constructor(data, handleCardClick, templateSelector) { 
+export default class Card {
+  constructor({data, handleCardClick}, templateSelector) { 
     this._name = data.name; 
     this._link = data.link; 
     this._templateSelector = templateSelector;
@@ -24,18 +24,25 @@ export default class Card {
     this._largeImage = this._element.querySelector('.element__image');
     this._largeImage.src = this._link;
     this._largeImage.alt = this._name;
-    this._element.querySelector('.element__title').textContent = this._name;
 
-    //
+    this._element.querySelector('.element__title').textContent = this._name;
 
     return this._element
   }
+
+  _handleLikeClick(evt) {
+    evt.target.classList.toggle('element__button_active');
+  } 
  
+  _handleDeleteClick() {
+    this._element.remove(); 
+  }
+
   _setEventListeners() {
     this._element
     .querySelector('.element__button')
-    .addEventListener('click', () => {
-      this._handleLikeClick();
+    .addEventListener('click', (evt) => {
+      this._handleLikeClick(evt);
     });
     
     this._element
@@ -52,20 +59,5 @@ export default class Card {
         link: this._link
       });
     });
-  } 
- 
-  _handleLikeClick() { 
-    this._element.classList.toggle('element__button_active'); 
-  } 
- 
-  _handleDeleteClick() { 
-    this._element.remove(); 
-  } 
- 
-  _handleLargeImage() { 
-    openPopup(popupImage); 
-    popupLargeImage.src = this._link; 
-    popupLargeImage.alt = this._name; 
-    popupCaption.textContent = this._name; 
   }
-} 
+}

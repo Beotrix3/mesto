@@ -11,23 +11,13 @@ import {
   popupEdit,
   popupAdd,
   popupImage,
-  popupLargeImage,
-  popupCaption,
-  closeEditPopupButton,
-  closeAddPopupButton,
-  closeImagePopupButton,
   formElement,
-  profileName,
-  profileDescription,
   popupName,
   popupDescription,
   elements,
   formAddElement,
-  popupTitle,
-  popupLink,
   config,
-  initialCards,
-  templateSelector
+  initialCards
 } from '../utils/constants.js'
 
 const editPopupValidator = new FormValidator (config, formElement);  
@@ -36,26 +26,17 @@ editPopupValidator.enableValidation();
 const addPopupValidator = new FormValidator (config, formAddElement); 
 addPopupValidator.enableValidation();
 
-const userInfo = new UserInfo({
-  name: profileName,
-  info: profileDescription
-});
-
 const imagePopup = new PopupWithImage(popupImage)
 imagePopup.setEventListeners()
 
 function createCard(data) {
   const card = new Card({
-    data,
+    data: data,
     handleCardClick: () => imagePopup.open(data)
   }, elements);
   
   return card
 }
-
-//initialCards.forEach((element) => { 
-  //elements.append(createCard(element)); 
-//});
 
 const cardList = new Section({
   items: initialCards,
@@ -66,37 +47,45 @@ const cardList = new Section({
   }
 }, elements);
 
-const popupFormCardAdd = new PopupWithForm(popupAdd, data => {
-  const card = createCard(data)
-  const cardElement = card.render()
-  cardList.addItem(cardElement)
-  addPopupValidator.toggleButtonState()
-  popupFormCardAdd.close()
-});
-
-popupFormCardAdd.setEventListeners()
-
-const popupFormProfilEdit = new PopupWithForm(popupEdit, (data) => {
-  userInfo.setUserInfo(data)
-  popupFormProfilEdit.close()
-});
-
-popupFormProfilEdit.setEventListeners()
+//создание новой карточки
 
 openAddPopupButton.addEventListener('click', () => {
   addPopupValidator.toggleButtonState()
   popupFormCardAdd.open()
 });
 
+const popupFormCardAdd = new PopupWithForm(popupAdd, (data) => {
+  const card = createCard(data)
+  const cardElement = card.render()
+  cardList.dataItem(cardElement)
+  addPopupValidator.toggleButtonState()
+  popupFormCardAdd.close()
+});
+
+popupFormCardAdd.setEventListeners()
+
+//редакт профиль
+
+const userInfo = new UserInfo({
+  userNameSelector: '.profile__name',
+  userInfoSelector: '.profile__description'
+});
+
 openEditPopupButton.addEventListener('click', () => {
+  popupFormProfilEdit.open()
   const userData = userInfo.getUserInfo();
 
   popupName.value = userData.name
   popupDescription.value = userData.info
 
   editPopupValidator.toggleButtonState();
-
-  //
-
-  popupFormProfilEdit.open()
 });
+
+const popupFormProfilEdit = new PopupWithForm(popupEdit, (data) => {
+  userInfo.setUserInfo(data);
+  popupFormProfilEdit.close();
+});
+
+popupFormProfilEdit.setEventListeners()
+
+cardList.renderItems();
