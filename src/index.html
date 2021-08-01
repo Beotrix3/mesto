@@ -15,6 +15,7 @@
     <section class="profile">
       <div class="profile__container-info">
         <img src="<%=require('./images/profile__avatar.png')%>" alt="Аватар профиля" class="profile__avatar">
+        <button type="button" class="profile__avatar-button"></button>
         <div class="profile__info">
           <div class="profile__title">
             <h1 class="profile__name">Жак-Ив Кусто</h1>
@@ -47,6 +48,16 @@
     </form>
   </div>
 
+  <div class="popup popup_edit-avatar">
+    <form name="formElement" class="popup__container popup__container_avatar" novalidate>
+      <button type="button" class="popup__close-button popup__close-button_edit-avatar"></button>
+      <h2 class="popup__title">Обновить аватар</h2>
+      <input id="link" name="link" type="url" class="popup__info popup__info_type_link" placeholder="Ссылка на картинку" required>
+      <span id="link-error" class="popup__input-error popupLink-input-error"></span>
+      <button type="submit" class="popup__save-button popup__save-button" value="Сохранить">Сохранить</button>
+    </form>
+  </div>
+
   <div class="popup popup_element_add">
     <form name="formElement" class="popup__container popup__container_add" novalidate>
       <button type="button" class="popup__close-button popup__close-button_element-add"></button>
@@ -56,6 +67,14 @@
       <input id="link" name="link" type="url" class="popup__info popup__info_type_link" placeholder="Ссылка на картинку" required>
       <span id="link-error" class="popup__input-error popupLink-input-error"></span>
       <button type="submit" class="popup__save-button popup__save-button_add" value="Создать">Создать</button>
+    </form>
+  </div>
+
+  <div class="popup popup_verify-delete">
+    <form name="formElement" class="popup__container" novalidate>
+      <button type="button" class="popup__close-button popup__close-button_verify-delete"></button>
+      <h2 class="popup__title">Вы уверены?</h2>
+      <button type="submit" class="popup__save-button" value="Да">Да</button>
     </form>
   </div>
 
@@ -73,7 +92,10 @@
       <button type="button" class="element__delete-button"></button>
       <div class="element__container">
         <p class="element__title"></p>
-        <button id="like-button" type="button" class ="element__button"></button>
+        <div class="element__like-container">
+          <button id="like-button" type="button" class ="element__button"></button>
+          <span class="element__like-number">0</span>
+        </div>
       </div>
     </div>
   </template>
