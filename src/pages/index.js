@@ -6,6 +6,7 @@ import Section from '../components/Section.js';
 import UserInfo from '../components/UserInfo.js';
 import PopupWithForm from '../components/PopupWithForm.js';
 import PopupWithImage from '../components/PopupWithImage.js';
+import PopupWithVerify from '../components/PopupWithVerify.js';
  
 import {
   openEditPopupButton,
@@ -19,7 +20,11 @@ import {
   elements,
   formAddElement,
   config,
-  initialCards
+  initialCards,
+  openAvatarPopupButton,
+  formAvatarElement,
+  popupAvatar,
+  popupVerify
 } from '../utils/constants.js'
 
 const editPopupValidator = new FormValidator (config, formElement);  
@@ -28,13 +33,23 @@ editPopupValidator.enableValidation();
 const addPopupValidator = new FormValidator (config, formAddElement); 
 addPopupValidator.enableValidation();
 
+const avatarPopupValidator = new FormValidator(config, formAvatarElement);
+avatarPopupValidator.enableValidation();
+
 const imagePopup = new PopupWithImage(popupImage)
 imagePopup.setEventListeners()
+
+const verifyPopup = new PopupWithVerify(popupVerify)
+verifyPopup.setEventListeners()
 
 function createCard(data) {
   const card = new Card({
     data: data,
-    handleCardClick: () => imagePopup.open(data)
+    handleCardClick: () => imagePopup.open(data),
+    handleVerifyDelete: () => verifyPopup.setSubmitAction(() => {
+      card.handleDeleteClick()
+      verifyPopup.close()
+    }, verifyPopup.open())
   }, elements);
   
   return card
@@ -70,7 +85,8 @@ popupFormCardAdd.setEventListeners()
 
 const userInfo = new UserInfo({
   userNameSelector: '.profile__name',
-  userInfoSelector: '.profile__description'
+  userInfoSelector: '.profile__description',
+  userAvatarSelector: '.profile__avatar'
 });
 
 openEditPopupButton.addEventListener('click', () => {
@@ -89,5 +105,20 @@ const popupFormProfilEdit = new PopupWithForm(popupEdit, (data) => {
 });
 
 popupFormProfilEdit.setEventListeners()
+
+//редакт аватар
+
+openAvatarPopupButton.addEventListener('click', () => {
+  popupFormAvatarEdit.open()
+  avatarPopupValidator.toggleButtonState()
+})
+
+const popupFormAvatarEdit = new PopupWithForm(popupAvatar, (data) => {
+  userInfo.setUserAvatar(data);
+  avatarPopupValidator.toggleButtonState()
+  popupFormAvatarEdit.close()
+})
+
+popupFormAvatarEdit.setEventListeners()
 
 cardList.renderItems();
