@@ -62,24 +62,24 @@ export default class Api {
     .then(this._handleResponse)
   }
 
-  like(id) {
-    return fetch(this._url + `/cards/likes/${id}`, {
-      method: 'PUT',
-      headers: this._headers
-    })
-    .then(this._handleResponse)
-  }
-
-  dislike(id) {
-    return fetch(this._url + `/cards/likes/${id}`, {
+  delete(id) {
+    return fetch(this._url + `/cards/${id}`, {
       method: 'DELETE',
       headers: this._headers
     })
     .then(this._handleResponse)
   }
 
-  delete(id) {
-    return fetch(this._url + `/cards/${id}`, {
+  like(id) {
+    return fetch(this._url + `/cards/likes/${id}`, {
+      method: 'PUT',
+      headers:this._headers
+    })
+    .then(this._handleResponse)
+  }
+
+  unlike(id) {
+    return fetch(this._url + `/cards/likes/${id}`, {
       method: 'DELETE',
       headers: this._headers
     })

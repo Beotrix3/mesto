@@ -160,9 +160,7 @@ let guestId
 
 Promise.all([api.getInitialCards(), api.getUserInfo()])
   .then(( [cards, userData] ) => {
-    console.log(userData)
     userInfo.setUserInfo(userData)
-    console.log(userData)
     guestId = userData._id
     cardList.renderItems(cards)
   })

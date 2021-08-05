@@ -10,9 +10,9 @@ export default class Card {
     this._handleVerifyDelete = handleVerifyDelete;
     this._handleLikeClick = handleLikeClick;
 
-    this.api = api;
+    this._api = api;
     this._id = data._id;
-    this._creatorId = data.creator._id;
+    this._creatorId = data.owner._id;
     this._guestId = guestId; 
   }
  
@@ -48,22 +48,22 @@ export default class Card {
   }
 
   handleLikeCard() {
-    const likeButton = this._element.querySelector('.elements__button')
-    const likeNumber = this._element.querySelector('.elements__like-number')
+    const likeButton = this._element.querySelector('.element__button')
+    const likeNumber = this._element.querySelector('.element__like-number')
 
-    if(!(likeButton.classList.contains('elements__button_active'))) {
+    if(!(likeButton.classList.contains('element__button_active'))) {
       this._api.like(this._id)
         .then((data) => {
-          likeButton.classList.add('elements__button_active')
+          likeButton.classList.add('element__button_active')
           likeNumber.textContent = data.likes.length
         })
         .catch((err) => {
           console.log(err)
         })
     } else {
-      this._api.dislike(this._id)
+      this._api.unlike(this._id)
         .then((data) => {
-          likeButton.classList.remove('elements__button_active')
+          likeButton.classList.remove('element__button_active')
           likeNumber.textContent = data.likes.length
         })
         .catch((err) => {
