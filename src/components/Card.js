@@ -1,11 +1,19 @@
 export default class Card {
-  constructor({data, handleCardClick, handleVerifyDelete}, templateSelector) { 
+  constructor({data, handleCardClick, handleVerifyDelete, handleLikeClick}, templateSelector, api, guestId) { 
     this._name = data.name; 
-    this._link = data.link; 
+    this._link = data.link;
+    this._likes = data.likes;
+
     this._templateSelector = templateSelector;
 
     this._handleCardClick = handleCardClick;
     this._handleVerifyDelete = handleVerifyDelete;
+    this._handleLikeClick = handleLikeClick;
+
+    this.api = api;
+    this._id = data._id;
+    this._creatorId = data.creator._id;
+    this._guestId = guestId; 
   }
  
   _createElements() { 
@@ -14,8 +22,6 @@ export default class Card {
     .content
     .querySelector('.element')
     .cloneNode(true);
-
-    return this._element
   }
 
   render() {
@@ -28,11 +34,42 @@ export default class Card {
 
     this._element.querySelector('.element__title').textContent = this._name;
 
+    this._element.querySelector('.element__like-number').textContent = this._likes.length;
+
+    if(!(this._creatorId === this._guestId)) {
+      this._element.querySelector('.element__delete-button').style.display = 'none'
+    }
+
+    if(this._likes.find((obj) => this._guestId === obj._id)) {
+      this._element.querySelector('.element__button').classList.add('element__button_active')
+    }
+
     return this._element
   }
 
-  _handleLikeClick(evt) {
-    evt.target.classList.toggle('element__button_active');
+  handleLikeCard() {
+    const likeButton = this._element.querySelector('.elements__button')
+    const likeNumber = this._element.querySelector('.elements__like-number')
+
+    if(!(likeButton.classList.contains('elements__button_active'))) {
+      this._api.like(this._id)
+        .then((data) => {
+          likeButton.classList.add('elements__button_active')
+          likeNumber.textContent = data.likes.length
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    } else {
+      this._api.dislike(this._id)
+        .then((data) => {
+          likeButton.classList.remove('elements__button_active')
+          likeNumber.textContent = data.likes.length
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
   } 
  
   handleDeleteClick() {
@@ -42,8 +79,8 @@ export default class Card {
   _setEventListeners() {
     this._element
     .querySelector('.element__button')
-    .addEventListener('click', (evt) => {
-      this._handleLikeClick(evt);
+    .addEventListener('click', () => {
+      this._handleLikeClick();
     });
     
     this._element

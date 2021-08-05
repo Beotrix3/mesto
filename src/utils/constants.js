@@ -42,33 +42,6 @@ const config = ({
   errorActiveClass: 'popup__input-error_active'
 });
 
-const initialCards = [
-  {
-    name: 'Бергамо',
-    link: 'https://images.unsplash.com/photo-1597425922106-4b9353c68f33?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1391&q=80'  
-  },
-  {
-    name: 'Флоренция',
-    link: 'https://images.unsplash.com/photo-1476362174823-3a23f4aa6d76?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'  
-  },
-  {
-    name: 'Милан',
-    link: 'https://images.unsplash.com/photo-1512204925985-f52390a87fda?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80'  
-  },
-  {  
-    name: 'Венеция',
-    link: 'https://images.unsplash.com/photo-1534113414509-0eec2bfb493f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80'  
-  },
-  {
-    name: 'Верона',
-    link: 'https://images.unsplash.com/photo-1567285272491-66350595f88b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=726&q=80'  
-  },
-  {
-    name: 'Кампителло-ди-Фасса',
-    link: 'https://images.unsplash.com/photo-1605609476793-3015923b4be1?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=613&q=80'  
-  }
-];
-
 export {
   openEditPopupButton,
   openAddPopupButton,
@@ -91,7 +64,6 @@ export {
   popupLink,
   config,
   popupAvatar,
-  initialCards,
   openAvatarPopupButton,
   closeAvatarPopupButton,
   formAvatarElement,

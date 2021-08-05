@@ -7,6 +7,7 @@ import UserInfo from '../components/UserInfo.js';
 import PopupWithForm from '../components/PopupWithForm.js';
 import PopupWithImage from '../components/PopupWithImage.js';
 import PopupWithVerify from '../components/PopupWithVerify.js';
+import Api from '../components/Api.js';
  
 import {
   openEditPopupButton,
@@ -20,12 +21,19 @@ import {
   elements,
   formAddElement,
   config,
-  initialCards,
   openAvatarPopupButton,
   formAvatarElement,
   popupAvatar,
   popupVerify
 } from '../utils/constants.js'
+
+const api = new Api({
+  url: 'https://mesto.nomoreparties.co/v1/cohort-26',
+  headers: {
+    "authorization": '442d7c15-d132-449b-929f-8694ae0bf753',
+    'Content-Type': 'application/json'
+  }
+})
 
 const editPopupValidator = new FormValidator (config, formElement);  
 editPopupValidator.enableValidation(); 
@@ -46,17 +54,26 @@ function createCard(data) {
   const card = new Card({
     data: data,
     handleCardClick: () => imagePopup.open(data),
-    handleVerifyDelete: () => verifyPopup.setSubmitAction(() => {
-      card.handleDeleteClick()
-      verifyPopup.close()
-    }, verifyPopup.open())
-  }, elements);
+    handleLikeClick: () => card.handleLikeCard(),
+    handleVerifyDelete: () => {
+      verifyPopup.setSubmitAction(() => {
+        verifyPopup.loadingProcess(true)
+        api.delete(data._id)
+          .then(() => {
+            card.handleDeleteClick()
+            verifyPopup.close()
+          })
+          .catch((err) => console.log(err))
+          .finally(() => verifyPopup.loadingProcess(false))
+      })
+      verifyPopup.open()
+    }
+  }, elements, api, guestId)
   
   return card
 }
 
 const cardList = new Section({
-  items: initialCards,
   renderer: item => {
     const card = createCard(item)
     const cardElement = card.render();
@@ -71,13 +88,19 @@ openAddPopupButton.addEventListener('click', () => {
   popupFormCardAdd.open()
 });
 
-const popupFormCardAdd = new PopupWithForm(popupAdd, (data) => {
-  const card = createCard(data)
-  const cardElement = card.render()
-  cardList.dataItem(cardElement)
-  addPopupValidator.toggleButtonState()
-  popupFormCardAdd.close()
-});
+const popupFormCardAdd = new PopupWithForm(popupAdd, (formValues) => {
+  popupFormCardAdd.doLoading(true)
+  api.addUserCard(formValues)
+    .then((data) => {
+      const card = createCard(data)
+      const cardElement = card.render()
+      cardList.dataItem(cardElement)
+      addPopupValidator.toggleButtonState()
+      popupFormCardAdd.close()
+    })
+    .catch((err) => console.log(err))
+    .finally(() => popupFormCardAdd.doLoading(true))
+})
 
 popupFormCardAdd.setEventListeners()
 
@@ -94,15 +117,21 @@ openEditPopupButton.addEventListener('click', () => {
   const userData = userInfo.getUserInfo();
 
   popupName.value = userData.name
-  popupDescription.value = userData.info
+  popupDescription.value = userData.about
 
   editPopupValidator.toggleButtonState();
 });
 
-const popupFormProfilEdit = new PopupWithForm(popupEdit, (data) => {
-  userInfo.setUserInfo(data);
-  popupFormProfilEdit.close();
-});
+const popupFormProfilEdit = new PopupWithForm(popupEdit, (formValues) => {
+  popupFormProfilEdit.doLoading(true)
+  api.setUserInfoApi(formValues)
+    .then((data) => {
+      userInfo.setUserInfo(data);
+      popupFormProfilEdit.close();
+    })
+    .catch((err) => console.log(err))
+    .finally(() => popupFormProfilEdit.doLoading(false))
+})
 
 popupFormProfilEdit.setEventListeners()
 
@@ -113,12 +142,28 @@ openAvatarPopupButton.addEventListener('click', () => {
   avatarPopupValidator.toggleButtonState()
 })
 
-const popupFormAvatarEdit = new PopupWithForm(popupAvatar, (data) => {
-  userInfo.setUserAvatar(data);
-  avatarPopupValidator.toggleButtonState()
-  popupFormAvatarEdit.close()
+const popupFormAvatarEdit = new PopupWithForm(popupAvatar, (formValues) => {
+  popupFormAvatarEdit.doLoading(true)
+  api.handleUserAvatar(formValues)
+    .then((data) => {
+      userInfo.setUserAvatar(data);
+      avatarPopupValidator.toggleButtonState()
+      popupFormAvatarEdit.close()
+    })
+    .catch((err) => console.log(err))
+    .finally(() => popupFormAvatarEdit.doLoading(false))
 })
 
 popupFormAvatarEdit.setEventListeners()
 
-cardList.renderItems();
+let guestId
+
+Promise.all([api.getInitialCards(), api.getUserInfo()])
+  .then(( [cards, userData] ) => {
+    console.log(userData)
+    userInfo.setUserInfo(userData)
+    console.log(userData)
+    guestId = userData._id
+    cardList.renderItems(cards)
+  })
+  .catch((err) => console.log(err))
