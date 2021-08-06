@@ -24,7 +24,7 @@ export default class PopupWithVerify extends Popup {
 
   loadingProcess(isLoading) {
     if(isLoading) {
-      this._popupSaveButton.textContent = 'Сохранение...'
+      this._popupSaveButton.textContent = 'Удаление...'
     } else {
       this._popupSaveButton.textContent = this._popupButton
     }

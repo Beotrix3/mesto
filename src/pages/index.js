@@ -10,21 +10,25 @@ import PopupWithVerify from '../components/PopupWithVerify.js';
 import Api from '../components/Api.js';
  
 import {
+  popupEditAvatarSelector,
+  popupVerifyDeleteSelector,
+  popupEditProfileSelector,
+  popupElementAddSelector,
+  elementsSelector,
+  popupImageSelector,
   openEditPopupButton,
   openAddPopupButton,
-  popupEdit,
-  popupAdd,
-  popupImage,
   formElement,
   popupName,
   popupDescription,
-  elements,
   formAddElement,
   config,
   openAvatarPopupButton,
   formAvatarElement,
-  popupAvatar,
-  popupVerify
+  profileNameSelector,
+  profileAboutSelector,
+  profileAvatarSelector,
+  templateSelector
 } from '../utils/constants.js'
 
 const api = new Api({
@@ -44,10 +48,10 @@ addPopupValidator.enableValidation();
 const avatarPopupValidator = new FormValidator(config, formAvatarElement);
 avatarPopupValidator.enableValidation();
 
-const imagePopup = new PopupWithImage(popupImage)
+const imagePopup = new PopupWithImage(popupImageSelector)
 imagePopup.setEventListeners()
 
-const verifyPopup = new PopupWithVerify(popupVerify)
+const verifyPopup = new PopupWithVerify(popupVerifyDeleteSelector)
 verifyPopup.setEventListeners()
 
 function createCard(data) {
@@ -68,7 +72,7 @@ function createCard(data) {
       })
       verifyPopup.open()
     }
-  }, elements, api, guestId)
+  }, templateSelector, api, guestId)
   
   return card
 }
@@ -79,7 +83,7 @@ const cardList = new Section({
     const cardElement = card.render();
     cardList.addItem(cardElement)
   }
-}, elements);
+}, elementsSelector);
 
 //создание новой карточки
 
@@ -88,18 +92,17 @@ openAddPopupButton.addEventListener('click', () => {
   popupFormCardAdd.open()
 });
 
-const popupFormCardAdd = new PopupWithForm(popupAdd, (formValues) => {
+const popupFormCardAdd = new PopupWithForm(popupElementAddSelector, (formValues) => {
   popupFormCardAdd.doLoading(true)
   api.addUserCard(formValues)
     .then((data) => {
       const card = createCard(data)
       const cardElement = card.render()
       cardList.dataItem(cardElement)
-      addPopupValidator.toggleButtonState()
       popupFormCardAdd.close()
     })
     .catch((err) => console.log(err))
-    .finally(() => popupFormCardAdd.doLoading(true))
+    .finally(() => popupFormCardAdd.doLoading(false))
 })
 
 popupFormCardAdd.setEventListeners()
@@ -107,9 +110,9 @@ popupFormCardAdd.setEventListeners()
 //редакт профиль
 
 const userInfo = new UserInfo({
-  userNameSelector: '.profile__name',
-  userInfoSelector: '.profile__description',
-  userAvatarSelector: '.profile__avatar'
+  name: profileNameSelector,
+  about: profileAboutSelector,
+  avatar: profileAvatarSelector
 });
 
 openEditPopupButton.addEventListener('click', () => {
@@ -122,7 +125,7 @@ openEditPopupButton.addEventListener('click', () => {
   editPopupValidator.toggleButtonState();
 });
 
-const popupFormProfilEdit = new PopupWithForm(popupEdit, (formValues) => {
+const popupFormProfilEdit = new PopupWithForm(popupEditProfileSelector, (formValues) => {
   popupFormProfilEdit.doLoading(true)
   api.setUserInfoApi(formValues)
     .then((data) => {
@@ -142,12 +145,11 @@ openAvatarPopupButton.addEventListener('click', () => {
   avatarPopupValidator.toggleButtonState()
 })
 
-const popupFormAvatarEdit = new PopupWithForm(popupAvatar, (formValues) => {
+const popupFormAvatarEdit = new PopupWithForm(popupEditAvatarSelector, (formValues) => {
   popupFormAvatarEdit.doLoading(true)
   api.handleUserAvatar(formValues)
     .then((data) => {
       userInfo.setUserAvatar(data);
-      avatarPopupValidator.toggleButtonState()
       popupFormAvatarEdit.close()
     })
     .catch((err) => console.log(err))

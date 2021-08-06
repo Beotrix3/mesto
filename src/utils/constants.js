@@ -31,7 +31,18 @@ const popupDescription = formElement.querySelector('.popup__info_type_descriptio
 const popupTitle = formAddElement.querySelector('.popup__info_type_title');  
 const popupLink = formAddElement.querySelector('.popup__info_type_link');
 
-const elements = document.querySelector('.elements');
+//селекторы
+
+const templateSelector = '#element-template'
+const popupImageSelector = '.popup_type_image'
+const elementsSelector = '.elements'
+const profileNameSelector = '.profile__name'
+const profileAboutSelector = '.profile__description'
+const popupElementAddSelector = '.popup_element_add'
+const popupEditProfileSelector = '.popup_edit-profile'
+const popupVerifyDeleteSelector = '.popup_verify-delete'
+const popupEditAvatarSelector = '.popup_edit-avatar'
+const profileAvatarSelector = '.profile__avatar'
 
 const config = ({
   formSelector: '.popup__container',
@@ -43,6 +54,15 @@ const config = ({
 });
 
 export {
+  profileAvatarSelector,
+  popupEditAvatarSelector,
+  popupVerifyDeleteSelector,
+  popupEditProfileSelector,
+  popupElementAddSelector,
+  profileAboutSelector,
+  profileNameSelector,
+  elementsSelector,
+  popupImageSelector,
   openEditPopupButton,
   openAddPopupButton,
   popupEdit,
@@ -58,7 +78,6 @@ export {
   profileDescription,
   popupName,
   popupDescription,
-  elements,
   formAddElement,
   popupTitle,
   popupLink,
@@ -69,5 +88,6 @@ export {
   formAvatarElement,
   closeVerifyPopupButton,
   formVerifyElement,
-  popupVerify
+  popupVerify,
+  templateSelector
 }

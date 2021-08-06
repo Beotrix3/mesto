@@ -18,7 +18,7 @@ export default class Card {
  
   _createElements() { 
     this._element = document
-    .querySelector('#element-template')
+    .querySelector(this._templateSelector)
     .content
     .querySelector('.element')
     .cloneNode(true);
